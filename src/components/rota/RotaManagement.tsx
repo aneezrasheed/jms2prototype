@@ -16,9 +16,10 @@ import {
   Check
 } from 'lucide-react';
 import { mockStaff, mockClients, mockPatches } from '../../data/mockData';
+import RotaTable from './RotaTable';
 
 const RotaManagement: React.FC = () => {
-  const [currentView, setCurrentView] = useState<'day-staff' | 'day-client' | 'week-staff' | 'week-client'>('day-staff');
+  const [currentView, setCurrentView] = useState<'day-staff' | 'day-client' | 'week-staff' | 'week-client' | 'rota-table'>('rota-table');
   const [selectedDate, setSelectedDate] = useState<string>(new Date().toISOString().split('T')[0]);
   const [selectedDistricts, setSelectedDistricts] = useState<string[]>([]);
   const [serviceLevelFilter, setServiceLevelFilter] = useState<string>('all');
@@ -606,6 +607,16 @@ const RotaManagement: React.FC = () => {
         <div className="flex items-center justify-between">
           <div className="flex space-x-1">
             <button
+              onClick={() => setCurrentView('rota-table')}
+              className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                currentView === 'rota-table'
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              }`}
+            >
+              Rota Table
+            </button>
+            <button
               onClick={() => setCurrentView('day-staff')}
               className={`px-4 py-2 rounded-lg font-medium transition-colors ${
                 currentView === 'day-staff'
@@ -718,6 +729,7 @@ const RotaManagement: React.FC = () => {
       </div>
 
       {/* Content */}
+      {currentView === 'rota-table' && <RotaTable />}
       {currentView === 'day-staff' && renderDayStaffView()}
       {currentView === 'day-client' && renderDayClientView()}
       {currentView === 'week-staff' && renderWeekStaffView()}
